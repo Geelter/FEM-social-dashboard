@@ -1,0 +1,22 @@
+@mixin section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-card-width), 1fr));
+    column-gap: var(--section-column-gap);
+    row-gap: var(--section-row-gap);
+}
+
+@mixin card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border-radius: 5px;
+    background-color: hsl( var(--clr-card-background) );
+}
+
+@mixin theme-change-transition {
+    transition-property: background-color, transform;
+	transition-duration: var(--toggle-duration);
+	transition-timing-function: 
+        cubic-bezier(.45,1.3,1,.63), 
+        cubic-bezier(0.6,0.2,0.4,1.7);
+}
