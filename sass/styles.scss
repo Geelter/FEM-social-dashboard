@@ -1,0 +1,476 @@
+@use './mixins/mixins.scss';
+
+/* ----------------------------- */
+/*       Custom properties       */
+/* ----------------------------- */
+
+:root {
+    /* colors */
+    /* Card Top (Pseudo) Borders */
+    --clr-facebook: hsl(208 92% 53%);
+    --clr-twitter: hsl(203 89% 53%);
+    --clr-instagram-gradient: 
+        linear-gradient(
+            90deg,
+            hsl(37 97% 70%), 
+            hsl(329 70% 58%)
+        );
+    --clr-youtube: hsl(348 97% 39%);
+
+    /* Indicator Text */
+    --clr-indicator-up: 163 72% 41%;
+    --clr-indicator-down: 356 69% 56%;
+
+    /* Theme Toggle */
+    --toggle-bg-light: 230 22% 74%;
+    --toggle-bg-dark:
+        linear-gradient(
+            90deg,
+            hsl(210 78% 56%),
+            hsl(146 68% 55%)
+        );
+
+    --fs-900: clamp(5rem, 8vw + 1rem, 9.375rem);
+    --fs-800: 6.25rem;
+    --fs-700: 3.5rem;
+    --fs-600: 2rem;
+    --fs-500: 1.75rem;
+    --fs-400: 0.9375rem;
+    --fs-300: 1rem;
+    --fs-200: 0.875rem;
+    
+    /* font-families */
+    --ff-sans-serif: 'Inter', sans-serif;
+
+    /* toggle variables */
+    --toggle-duration: 300ms;
+    --toggle-width: 4rem;
+	--toggle-height: calc(var(--toggle-width) / 2);
+}
+
+:root,
+:root[data-force-color-mode="light"] {
+    color-scheme: light dark;
+    /* Light Theme */
+    --clr-background: 0 0% 100%;
+    --clr-top-background: 225 100% 98%;
+    --clr-card-background: 227 47% 96%;
+    --clr-text: 230 17% 14%;
+    --clr-accent-text: 228 12% 44%;
+    --toggle-background: hsl(var(--toggle-bg-light));
+    --toggle-slider: hsl(var(--clr-top-background));
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Dark Theme */
+        --clr-background: 230 17% 14%;
+        --clr-top-background: 232 19% 15%;
+        --clr-card-background: 228 28% 20%;
+        --clr-text: 0 0% 100%;
+        --clr-accent-text: 228 34% 66%;
+        --toggle-background: var(--toggle-bg-dark);
+        --toggle-slider: hsl(var(--clr-top-background));
+    }
+}
+
+:root[data-force-color-mode="dark"] {
+    /* Dark Theme */
+    --clr-background: 230 17% 14%;
+    --clr-top-background: 232 19% 15%;
+    --clr-card-background: 228 28% 20%;
+    --clr-text: 0 0% 100%;
+    --clr-accent-text: 228 34% 66%;
+    --toggle-background: var(--toggle-bg-dark);
+    --toggle-slider: hsl(var(--clr-top-background));
+}
+
+/* ------------------- */
+/*        Reset        */
+/* ------------------- */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* Remove default margin in favour of better control in authored CSS */
+body, h1, h2, h3, h4, p,
+figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Set shorter line heights on headings and interactive elements */
+h1, h2, h3, h4,
+button, input, label {
+  line-height: 1.1;
+}
+
+/* Balance text wrapping on headings */
+h1, h2,
+h3, h4 {
+  text-wrap: balance;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+  color: currentColor;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input, button,
+textarea, select {
+  font: inherit;
+}
+
+/* ------------------------- */
+/*      Utility classes      */
+/* ------------------------- */
+
+.flow > *:where(:not(:first-child)) {
+    margin-top: var(--flow-space, 1rem);
+}
+
+.text-green { color: hsl( var(--clr-indicator-up) ); }
+.text-red { color: hsl( var(--clr-indicator-down) ); }
+
+/* ------------------------------- */
+/*        Component classes        */
+/* ------------------------------- */
+
+body {
+    font-family: var(--ff-sans-serif);
+    color: hsl( var(--clr-text) );
+    background-color: hsl( var(--clr-background) );
+}
+
+.wrapper {
+    --central-column-max-width: 80rem;
+    --section-max-column-count: 4;
+    --section-column-gap: 2rem;
+    --section-row-gap: 1.5rem;
+    /* 
+    I know this variable declaration is getting long but I decided it would
+    be better to create a way to calculate the used value instead of using a magic
+    number while crossing my fingers.
+    */
+    --min-card-width: calc(
+        (var(--central-column-max-width) - 
+        ((var(--section-max-column-count) - 1) * var(--section-column-gap)) 
+        ) / var(--section-max-column-count)
+    );
+
+    display: grid;
+    grid-template-columns: 
+        minmax(1.5rem, 1fr) minmax(0, var(--central-column-max-width)) minmax(1.5rem, 1fr);
+    grid-template-rows: auto repeat(2, 3rem) repeat(2, auto);
+    grid-template-areas: 
+        '. header     .'
+        '. .          .'
+        '. followers  .'
+        '. followers  .'
+        '. statistics .';
+    
+    &__topbar {
+        grid-column: 1 / -1;
+        grid-row: 1 / 4;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+        background-color: hsl(var(--clr-top-background));
+    }
+}
+
+.header {
+    grid-area: header;
+
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+    background-color: hsl( var(--clr-top-background) );
+
+    &__text {
+        display: flex;
+        flex-direction: column;
+
+        &-heading {
+            font-size: 1.5rem;
+        }
+
+        &-subheading {
+            @include mixins.fs-200;
+            @include mixins.fw-bold;
+            @include mixins.accent-text;
+        }
+    }
+
+    &__divider {
+        width: 100%;
+        margin-block: 1rem;
+        border: 0;
+        border-top: 1.5px solid hsl( var(--clr-accent-text) / 0.3 );
+    }
+}
+
+.followers {
+    @include mixins.section-grid;
+
+    grid-area: followers;
+
+    &__card {
+        --flow-space: 1.5rem;
+
+        @include mixins.card;
+        @include mixins.fs-200;
+        @include mixins.fw-bold;
+
+        position: relative;
+        align-items: center;
+        text-align: center;
+        overflow: hidden;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--_card-border, var(--clr-facebook));
+        }
+
+        &-handle {
+            @include mixins.accent-text;
+
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            h2 {
+                font-size: inherit;
+            }
+        }
+
+        &-total {
+            --flow-space: 1.2rem;
+
+            @include mixins.fs-700;
+
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+
+            & > span {
+                @include mixins.fs-200;
+                @include mixins.fw-regular;
+                @include mixins.letter-spacing-1;
+                @include mixins.uppercase;
+                @include mixins.accent-text;
+            }
+        }
+
+        &-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+    }
+}
+
+.statistics {
+    @include mixins.section-grid;
+    grid-area: statistics;
+
+    padding-block: 3rem;
+
+    &__title {
+        grid-column: 1 / -1;
+    }
+
+    &__card {
+        --flow-space: 2.5rem;
+
+        @include mixins.card;
+        @include mixins.fs-200;
+        @include mixins.fw-bold;
+
+        & > div:first-of-type {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        & > div:last-of-type {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        &-heading {
+            @include mixins.fs-300;
+            @include mixins.accent-text;
+        }
+
+        &-icon {
+            width: 1.5rem;
+        }
+
+        &-value {
+            @include mixins.fs-600;
+            
+            line-height: 1;
+        }
+
+        &-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    }
+}
+
+.toggle {
+    position: relative;
+    width: var(--toggle-width);
+	height: var(--toggle-height);
+	margin-left: auto;
+	appearance: none;
+	border-radius: 100rem;
+	cursor: pointer;
+    background: var(--toggle-background);
+
+    &::before {
+        @include mixins.theme-change-transition;
+
+        position: absolute;
+        display: block;
+
+        --_before-width: calc(var(--toggle-width) / 3);
+        --_before-inset: calc((var(--toggle-height) - var(--_before-width)) / 2);
+
+        content: "";
+        top: var(--_before-inset);
+        left: var(--_before-inset);
+        width: var(--_before-width);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background-color: var(--toggle-slider);
+    }
+
+    &:checked::before {
+        transform: translateX(calc(var(--toggle-width) / 2));
+    }
+
+    &__container {
+        display: flex; 
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    &__reset {
+        @include mixins.fs-200;
+        @include mixins.fw-bold;
+        @include mixins.accent-text;
+    
+        flex-basis: 0;
+        height: 1rem;
+        margin-right: 0;
+        text-decoration: none;
+        line-height: 1;
+        overflow: hidden;
+
+        transition-property: margin, flex-basis;
+        transition-duration: var(--toggle-duration);
+        transition-timing-function: linear;
+    }
+}
+
+html[data-force-color-mode="light"],
+html[data-force-color-mode="dark"] {
+    .toggle__reset {
+        /* 
+        This is a bit hacky since you can't animate to 'auto' and 50px works only 
+        with this specific font size, if you change it the element either gets cut 
+        off or takes up too much horizontal space. I'd like to know how to achieve 
+        this effect for any given content.
+        */
+        flex-basis: 50px;
+        margin-right: 0.15rem;
+    }
+}
+
+.slot {
+    display: block;
+    height: 1rem;
+	font-weight: bold;
+	line-height: 1;
+	overflow: hidden;
+
+    &__label {
+        @include mixins.fs-200;
+        @include mixins.fw-bold;
+        @include mixins.accent-text;
+
+        display: block;
+        margin-right: 0.5rem;
+        transition-property: transform;
+        transition-duration: var(--toggle-duration);
+        transition-timing-function: cubic-bezier(.06,.2,.4,1.15);
+    }
+
+    /*
+    These selectors are really cool. They create the illusion of a 3D rolling
+    effect by moving the elements around with transforms. If you remove the
+    'overflow: hidden' from the parent and 'scaleY' from these selectors you will
+    see how it actually looks.
+    */
+    &:has(+ .toggle:checked) &__label,
+    &__label:nth-child(2) {
+        transform: translateY(-50%) scaleY(0);
+    }
+
+    &:has(+ .toggle:checked) &__label:nth-child(2) {
+        transform: translateY(-100%) scaleY(1);
+    }
+}
+
+@media (width >= 35em) {
+    .wrapper__topbar {
+        border-radius: 0;
+    }
+
+    .header {
+        flex-direction: row;
+        justify-content: space-between;
+        
+        &__divider {
+            display: none;
+        }
+    }
+
+    .toggle {
+        margin-left: 0;
+    }
+}
