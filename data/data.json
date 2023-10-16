@@ -1,0 +1,94 @@
+{
+    "mainData": [
+        {
+            "title": "@nathanf",
+            "subtitle": "followers",
+            "mainValue": "1987",
+            "trendValue": 12,
+            "trendPositive": true,
+            "platform": "facebook"
+        },
+        {
+            "title": "@nathanf",
+            "subtitle": "followers",
+            "mainValue": "1044",
+            "trendValue": 99,
+            "trendPositive": true,
+            "platform": "twitter"
+        },
+        {
+            "title": "@realnathanf",
+            "subtitle": "followers",
+            "mainValue": "11k",
+            "trendValue": 1099,
+            "trendPositive": true,
+            "platform": "instagram"
+        },
+        {
+            "title": "Nathan F.",
+            "subtitle": "subscribers",
+            "mainValue": "8239",
+            "trendValue": 144,
+            "trendPositive": false,
+            "platform": "youtube"
+        }
+    ],
+    "secondaryData": [
+        {
+            "title": "Page Views",
+            "mainValue": "87",
+            "trendValue": 3,
+            "trendPositive": true,
+            "platform": "facebook"
+        },
+        {
+            "title": "Likes",
+            "mainValue": "52",
+            "trendValue": 3,
+            "trendPositive": false,
+            "platform": "facebook"
+        },
+        {
+            "title": "Likes",
+            "mainValue": "5462",
+            "trendValue": 2257,
+            "trendPositive": true,
+            "platform": "instagram"
+        },
+        {
+            "title": "Profile Views",
+            "mainValue": "52k",
+            "trendValue": 1375,
+            "trendPositive": true,
+            "platform": "instagram"
+        },
+        {
+            "title": "Retweets",
+            "mainValue": "117",
+            "trendValue": 303,
+            "trendPositive": true,
+            "platform": "twitter"
+        },
+        {
+            "title": "Likes",
+            "mainValue": "507",
+            "trendValue": 553,
+            "trendPositive": true,
+            "platform": "twitter"
+        },
+        {
+            "title": "Likes",
+            "mainValue": "107",
+            "trendValue": 19,
+            "trendPositive": false,
+            "platform": "youtube"
+        },
+        {
+            "title": "Total Views",
+            "mainValue": "1407",
+            "trendValue": 12,
+            "trendPositive": false,
+            "platform": "youtube"
+        }
+    ]
+}
