@@ -1,87 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- displays site properly based on user's device -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- displays site properly based on user's device -->
 
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
-  <title>Frontend Mentor | [Challenge Name Here]</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon-32x32.png"
+    />
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
-</head>
-<body>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
-  Social Media Dashboard
-  Total Followers: 23,004
+    <link rel="stylesheet" href="./sass/styles.css" />
 
-  Dark Mode
+    <script>
+      // Check if there's any override. If so, let the markup know by setting an attribute on the <html> element
+      const colorModeOverride = window.localStorage.getItem("color-mode");
+      const hasColorModeOverride = typeof colorModeOverride === "string";
+      if (hasColorModeOverride) {
+        document.documentElement.setAttribute(
+          "data-force-color-mode",
+          colorModeOverride
+        );
+      }
+    </script>
+    <script src="./scripts/theme.js" defer></script>
 
-  
+    <script type="module" src="./scripts/cards.js"></script>
 
-  @nathanf
-  1987
-  Followers
-  12 Today
+    <title>Frontend Mentor | Dashboard with theme</title>
+  </head>
+  <body>
+    <main class="wrapper">
+      <div class="wrapper__topbar"></div>
 
-  @nathanf
-  1044
-  Followers
-  99 Today
+      <header class="header">
+        <div class="header__text">
+          <h1 class="header__text-heading">Social Media Dashboard</h1>
+          <p class="header__text-subheading">Total Followers: 23,004</p>
+        </div>
 
-  @realnathanf
-  11k
-  Followers
-  1099 Today
+        <hr class="header__divider" />
 
-  Nathan F.
-  8239
-  Subscribers
-  144 Today
+        <div class="toggle__container">
+          <a class="toggle__reset" href="#" role="button">(Reset)</a>
 
+          <label for="toggle" class="slot">
+            <span class="slot__label">Light Mode</span>
+            <span class="slot__label">Dark Mode</span>
+          </label>
+          <input id="toggle" class="toggle" type="checkbox" role="switch" />
+          <script>
+            // Check the dark-mode checkbox if
+            // - The override is set to dark
+            // - No override is set but the system prefers dark mode
+            if (
+              colorModeOverride == "dark" ||
+              (!hasColorModeOverride &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+              document.querySelector(".toggle").checked = true;
+            }
+          </script>
+        </div>
+      </header>
 
+      <section class="followers"></section>
 
-  Overview - Today
-
-  Page Views
-  87
-  3%
-
-  Likes
-  52
-  2%
-
-  Likes
-  5462
-  2257%
-
-  Profile Views
-  52k
-  1375%
-
-  Retweets
-  117
-  303%
-
-  Likes
-  507
-  553%
-
-  Likes
-  107
-  19%
-
-  Total Views
-  1407
-  12%
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
-</body>
+      <section class="statistics">
+        <h2 class="statistics__title">Overview - Today</h2>
+      </section>
+    </main>
+  </body>
 </html>
